@@ -95,8 +95,8 @@
 
   1. Clone Github Repository https://github.com/jimk1997/StealAllTheCats.git
   2. Run the app with IIS Express from Visual Studio.
-  3. Access the Swagger UI for API documentation and testing at:
-  4. https://localhost:44366/swagger/index.html
+  3. Access the Swagger UI for API documentation and testing at:  
+     https://localhost:44366/swagger/index.html
 
 - Running the Application via Container:
 
@@ -104,8 +104,8 @@
   2. Restart your PC and enter BIOS/UEFI setup and enable the virtualization option.
   3. Run the following SQL Queries in Sql Server Management Studio https://learn.microsoft.com/en-us/ssms/
 
-	 ```sql
-	 CREATE LOGIN stealuser WITH PASSWORD = 'StealCats@123';  
+     ```sql
+     CREATE LOGIN stealuser WITH PASSWORD = 'StealCats@123';  
      USE CatsDB;  
      CREATE USER stealuser FOR LOGIN stealuser;  
      ALTER ROLE db_owner ADD MEMBER stealuser;  
