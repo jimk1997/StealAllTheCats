@@ -2,12 +2,14 @@
 
 - Project Endpoints:
 
-  1. POST /api/cats/fetch: Fetch 25 cat images from CaaS API and save them to the database. After rerunning the operation, no duplicate cats are present.  
-     The POST /api/cats/fetch endpoint handle fetching cat images as a background job. Implement a job, using Hangfire.  
-     Once the job is started, return a response to the user with a job identifier that allows them to track the status of the background job (e.g., GET /api/jobs/{id} to check the status).  
+  1. POST /api/cats/fetch: Fetch 25 cat images from CaaS API and save them to the database.   
+	 After rerunning the operation, no duplicate cats are present.  
+     The POST /api/cats/fetch endpoint handle fetching cat images as a background job. 
+	 Implement a job using Hangfire. Once the job is started, return a response to the user 
+	 with a job identifier that allows them to track the status of the background job (e.g., GET /api/jobs/{id} to check the status).  
   2. GET /api/cats/{id}: Retrieve a cat by its ID.
-  3. GET /api/cats: Retrieve cats with paging support (e.g., GET /api/cats?page=1&pageSize=10).
-     GET /api/cats: Retrieve cats with a specific tag with paging support (e.g., GET /api/cats?tag=playful&page=1&pageSize=10”)
+  3. GET /api/cats: Retrieve cats with paging support (e.g., GET /api/cats?page=1&pageSize=10).  
+     GET /api/cats: Retrieve cats with a specific tag with paging support (e.g., GET /api/cats?tag=playful&page=1&pageSize=10)
   4. GET /api/jobs/{id} to check the status
 
 - Project Structure:
@@ -23,7 +25,7 @@
 - Database & Api Configuration:
 
   1. Use the Installer executable for Microsoft SQL Server 2022 Developer Edition (SQL2022-SSEI-Dev.exe). https://www.microsoft.com/en-us/sql-server/sql-server-downloads
-  2. Uses Windows Authentication to connect to the 'CatsDB' database on the local SQL Server instance.
+  2. Use Windows Authentication to connect to the 'CatsDB' database on the local SQL Server instance.
   3. Go to appsettings.json and fill your "BaseUrl" and "ApiKey", which you can find here https://developers.thecatapi.com/view-account/ylX4blBYT9FaoVd6OhvR?report=FJkYOq9tW
   
 - Database Schema:
@@ -40,7 +42,7 @@
   TagEntity:
 
   1. Id: An auto incremental unique integer that identifies a tag within your database
-  2. Name: Describes the cat s temperament, returned from CaaS API (breeds\temperament).  
+  2. Name: Describes the cat's temperament, returned from CaaS API (breeds\temperament).  
 	    - One cat may have many tags, and many cats can share a tag  
 	    - Field breed/temperament contains comma-separated values. Each one of them is a tag.  
 	    - Search images on Cat API with breeds only.  
