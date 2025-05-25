@@ -2,9 +2,9 @@
 
 - Project Endpoints:
 
-  1. POST /api/cats/fetch: Fetch 25 cat images from CaaS API and save them to the database. After rerunning the operation, no duplicate cats are present.
-     The POST /api/cats/fetch endpoint handle fetching cat images as a background job. Implement a job, using Hangfire.
-     Once the job is started, return a response to the user with a job identifier that allows them to track the status of the background job (e.g., GET /api/jobs/{id} to check the status).
+  1. POST /api/cats/fetch: Fetch 25 cat images from CaaS API and save them to the database. After rerunning the operation, no duplicate cats are present.  
+     The POST /api/cats/fetch endpoint handle fetching cat images as a background job. Implement a job, using Hangfire.  
+     Once the job is started, return a response to the user with a job identifier that allows them to track the status of the background job (e.g., GET /api/jobs/{id} to check the status).  
   2. GET /api/cats/{id}: Retrieve a cat by its ID.
   3. GET /api/cats: Retrieve cats with paging support (e.g., GET /api/cats?page=1&pageSize=10).
      GET /api/cats: Retrieve cats with a specific tag with paging support (e.g., GET /api/cats?tag=playful&page=1&pageSize=10”)
@@ -68,20 +68,22 @@
 
   Example Response:
 
-  {
-	"id":"0XYvRd7oD",
-	"width":1204,"height":1445,
-	"url":"https://cdn2.thecatapi.com/images/0XYvRd7oD.jpg",
-	"breeds":[{
-		"weight":{"imperial":"7  -  10","metric":"3 - 5"},
-		"id":"abys","name":"Abyssinian",
-		"temperament":"Active, Energetic, Independent, Intelligent, Gentle",
-		"origin":"Egypt",
-		"country_codes":"EG",
-		"country_code":"EG",
-		"life_span":"14 - 15",
-		"wikipedia_url":"https://en.wikipedia.org/wiki/Abyssinian_(cat)"
-	}]
+  ```json
+  {  
+	"id":"0XYvRd7oD",  
+	"width":1204,"height":1445,  
+	"url":"https://cdn2.thecatapi.com/images/0XYvRd7oD.jpg",  
+	"breeds":[{  
+		"weight":{"imperial":"7  -  10","metric":"3 - 5"},  
+		"id":"abys","name":"Abyssinian",  
+		"temperament":"Active, Energetic, Independent, Intelligent, Gentle",  
+		"origin":"Egypt",  
+		"country_codes":"EG",  
+		"country_code":"EG",  
+		"life_span":"14 - 15",  
+		"wikipedia_url":"https://en.wikipedia.org/wiki/Abyssinian_(cat)"  
+	}]  
+  ```
 
 - Hangfire:
 
@@ -98,13 +100,19 @@
 
   1. Download Docker Desktop https://www.docker.com/products/docker-desktop/
   2. Restart your PC and enter BIOS/UEFI setup and enable the virtualization option.
-  3. Run the follwing SQL Queries in Sql Server Management Studio https://learn.microsoft.com/en-us/ssms/
+  3. Run the following SQL Queries in Sql Server Management Studio https://learn.microsoft.com/en-us/ssms/
+
+	 ```sql
 	 CREATE LOGIN stealuser WITH PASSWORD = 'StealCats@123';  
      USE CatsDB;  
      CREATE USER stealuser FOR LOGIN stealuser;  
      ALTER ROLE db_owner ADD MEMBER stealuser;  
+     ```
   4. Change the Connection String
+
+	 ```json
 	 "DefaultConnection": "Server=host.docker.internal;Database=CatsDB;User Id=stealuser;Password=StealCats@123;TrustServerCertificate=True;"
+	 ```
   5. Go to Database Properties via SSMS -> Security -> Select "SQL Server and Windows Authentication mode"
   6. Activate TCP/IP
 	 Sql Server Configuration Manager  
