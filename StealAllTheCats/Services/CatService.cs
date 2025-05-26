@@ -43,9 +43,9 @@ namespace StealAllTheCats.Services
                 await _catRepository.SaveChangesAsync();
             }
         }
-        public Task<CatEntity?> GetCatWithTagsAsync(int id)
+        public async Task<CatEntity?> GetCatWithTagsAsync(int id)
         {
-            return _catRepository.GetCatWithTagsAsync(id);
+            return await _catRepository.GetCatWithTagsAsync(id);
         }
         public IQueryable<CatEntity> GetCatsWithTags()
         {

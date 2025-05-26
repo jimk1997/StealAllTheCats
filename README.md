@@ -22,11 +22,6 @@
   6. Services: Contains business services.
   7. Logs: Stores log files for capturing application runtime information, errors, and diagnostics.
 
-- Database Configuration:
-
-  1. Use the Installer executable for Microsoft SQL Server 2022 Developer Edition (SQL2022-SSEI-Dev.exe). https://www.microsoft.com/en-us/sql-server/sql-server-downloads
-  2. Use Windows Authentication to connect to the 'CatsDB' database on the local SQL Server instance.
-
 - Database Schema:
 
   CatEntity:
@@ -55,13 +50,6 @@
   2. TagEntityId: Foreign key referencing TagEntity
   3. Cat: Navigation property to the related CatEntity
   4. Tag: Navigation property to the related TagEntity
-
-- Database Migration:
-
-  1. Open Developer Command Prompt
-  2. cd C:\Users\yourUser\source\repos\StealAllTheCats\StealAllTheCats
-  3. dotnet ef migrations add InitialCreate
-  4. dotnet ef database update
 
 - Third Party API:
 
@@ -94,14 +82,26 @@
 
   An easy way to perform background processing in .NET Core applications. https://www.hangfire.io/
 
-- Running the Application:
+- Database Configuration:
+
+  1. Use the Installer executable for Microsoft SQL Server 2022 Developer Edition (SQL2022-SSEI-Dev.exe). https://www.microsoft.com/en-us/sql-server/sql-server-downloads
+  2. Use Windows Authentication to connect to the 'CatsDB' database on the local SQL Server instance.
+
+- Database Migration:
 
   1. Clone Github Repository https://github.com/jimk1997/StealAllTheCats.git
-  2. Run the app with IIS Express from Visual Studio.
-  3. Access the Swagger UI for API documentation and testing at:  
+  2. Open Developer Command Prompt
+  3. cd C:\Users\yourUser\source\repos\StealAllTheCats\StealAllTheCats
+  4. dotnet ef migrations add InitialCreate
+  5. dotnet ef database update
+
+- Running the Application:
+ 
+  1. Run the app with IIS Express from Visual Studio.
+  2. Access the Swagger UI for API documentation and testing at:  
      https://localhost:44366/swagger/index.html
 
-- Running the Application via Container:
+- Running the Application via Container (Alternative):
 
   1. Download Docker Desktop https://www.docker.com/products/docker-desktop/
   2. Restart your PC and enter BIOS/UEFI setup and enable the virtualization option.

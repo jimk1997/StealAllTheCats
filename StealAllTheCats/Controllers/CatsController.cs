@@ -45,20 +45,6 @@ namespace StealAllTheCats.Controllers
             return Ok(new { JobId = id, Status = state });
         }
 
-        // GET: api/cats/id
-        [HttpGet("{id}")]
-        public async Task<ActionResult<CatDto>> GetCat(int id)
-        {
-            var cat = await _catService.GetCatWithTagsAsync(id);
-
-            if (cat == null)
-                return NotFound();
-
-            var catDto = CatEntityToDto(cat);
-
-            return Ok(catDto);
-        }
-
         // GET: api/cats
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CatDto>>> GetCats(
@@ -87,6 +73,19 @@ namespace StealAllTheCats.Controllers
             return Ok(pagedCatsDto);
         }
 
+        // GET: api/cats/id
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CatDto>> GetCat(int id)
+        {
+            var cat = await _catService.GetCatWithTagsAsync(id);
+
+            if (cat == null)
+                return NotFound();
+
+            var catDto = CatEntityToDto(cat);
+
+            return Ok(catDto);
+        }
         private CatDto CatEntityToDto(CatEntity cat)
         {
             return new CatDto
