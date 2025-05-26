@@ -31,6 +31,20 @@ namespace StealAllTheCats.Controllers
             return Accepted(new { JobId = jobId });
         }
 
+        [HttpGet("jobs/{id}")]
+        public IActionResult GetJobStatus(string id)
+        {
+            var monitoringApi = JobStorage.Current.GetMonitoringApi();
+            var jobDetails = monitoringApi.JobDetails(id);
+
+            if (jobDetails == null)
+                return NotFound(new { Status = "NotFound", Message = "Job ID not found" });
+
+            var state = jobDetails.History.FirstOrDefault()?.StateName;
+
+            return Ok(new { JobId = id, Status = state });
+        }
+
         // GET: api/cats/id
         [HttpGet("{id}")]
         public async Task<ActionResult<CatDto>> GetCat(int id)
@@ -71,20 +85,6 @@ namespace StealAllTheCats.Controllers
             var pagedCatsDto = pagedCats.Select(c => CatEntityToDto(c)).ToList();
 
             return Ok(pagedCatsDto);
-        }
-
-        [HttpGet("jobs/{id}")]
-        public IActionResult GetJobStatus(string id)
-        {
-            var monitoringApi = JobStorage.Current.GetMonitoringApi();
-            var jobDetails = monitoringApi.JobDetails(id);
-
-            if (jobDetails == null)
-                return NotFound(new { Status = "NotFound", Message = "Job ID not found" });
-
-            var state = jobDetails.History.FirstOrDefault()?.StateName;
-
-            return Ok(new { JobId = id, Status = state });
         }
 
         private CatDto CatEntityToDto(CatEntity cat)

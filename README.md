@@ -22,12 +22,11 @@
   6. Services: Contains business services.
   7. Logs: Stores log files for capturing application runtime information, errors, and diagnostics.
 
-- Database & Api Configuration:
+- Database Configuration:
 
   1. Use the Installer executable for Microsoft SQL Server 2022 Developer Edition (SQL2022-SSEI-Dev.exe). https://www.microsoft.com/en-us/sql-server/sql-server-downloads
   2. Use Windows Authentication to connect to the 'CatsDB' database on the local SQL Server instance.
-  3. Go to appsettings.json and fill your "BaseUrl" and "ApiKey", which you can find here https://developers.thecatapi.com/view-account/ylX4blBYT9FaoVd6OhvR?report=FJkYOq9tW
-  
+
 - Database Schema:
 
   CatEntity:
@@ -86,6 +85,10 @@
 		"wikipedia_url":"https://en.wikipedia.org/wiki/Abyssinian_(cat)"  
 	}]  
   ```
+
+- Api Configuration:
+
+  Go to appsettings.json and fill your "BaseUrl" and "ApiKey", which you can find here https://developers.thecatapi.com/view-account/ylX4blBYT9FaoVd6OhvR?report=FJkYOq9tW
 
 - Hangfire:
 
