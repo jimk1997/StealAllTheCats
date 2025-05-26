@@ -32,10 +32,10 @@ namespace StealAllTheCats.Controllers
         }
 
         [HttpGet("jobs/{id}")]
-        public IActionResult GetJobStatus(int id)
+        public IActionResult GetJobStatus(string id)
         {
-            if (id <= 0)
-                return BadRequest(new { Status = "InvalidId", Message = "Job ID must be a positive integer." });
+            if (!int.TryParse(id, out int numericId) || numericId <= 0)
+                return BadRequest(new { Status = "InvalidId", Message = "Job ID must be a positive number." });
 
             var monitoringApi = JobStorage.Current.GetMonitoringApi();
             var jobDetails = monitoringApi.JobDetails(id.ToString());
@@ -80,6 +80,9 @@ namespace StealAllTheCats.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CatDto>> GetCat(int id)
         {
+            if (id <= 0)
+                return BadRequest(new { Status = "InvalidId", Message = "Cat ID must be a positive integer." });
+
             var cat = await _catService.GetCatWithTagsAsync(id);
 
             if (cat == null)

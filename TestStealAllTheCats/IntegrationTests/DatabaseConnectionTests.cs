@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StealAllTheCats.Data;
 
-namespace TestStealAllTheCats
+namespace TestStealAllTheCats.IntegrationTests
 {
     [TestClass]
     public sealed class DatabaseConnectionTests
@@ -16,6 +16,7 @@ namespace TestStealAllTheCats
         }
 
         [TestMethod]
+        [TestCategory("Integration")]
         public async Task TestDatabaseConnection()
         {
             using var context = CreateDbContext();

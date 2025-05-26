@@ -3,12 +3,13 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace TestStealAllTheCats
+namespace TestStealAllTheCats.IntegrationTests
 {
     [TestClass]
     public class CatApiHealthCheckTests
     {
         [TestMethod]
+        [TestCategory("Integration")]
         public async Task TestCatApiIsAvailable()
         {
             using var client = new HttpClient

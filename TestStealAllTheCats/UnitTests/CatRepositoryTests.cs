@@ -3,7 +3,7 @@ using StealAllTheCats.Data;
 using StealAllTheCats.Models;
 using StealAllTheCats.Repositories;
 
-namespace TestStealAllTheCats
+namespace TestStealAllTheCats.UnitTests
 {
     [TestClass]
     public class CatRepositoryTests
@@ -18,6 +18,7 @@ namespace TestStealAllTheCats
         }
 
         [TestMethod]
+        [TestCategory("Unit")]
         public async Task CatExistsAsync_ReturnsTrue_WhenCatExists()
         {
             using var context = CreateInMemoryDbContext();
@@ -33,6 +34,7 @@ namespace TestStealAllTheCats
         }
 
         [TestMethod]
+        [TestCategory("Unit")]
         public async Task GetCatWithTagsAsync_ReturnsCat_WhenCatExists()
         {
             using var context = CreateInMemoryDbContext();
@@ -49,6 +51,7 @@ namespace TestStealAllTheCats
         }
 
         [TestMethod]
+        [TestCategory("Unit")]
         public async Task GetCatsWithTags_ReturnsCats()
         {
             using var context = CreateInMemoryDbContext();
@@ -67,6 +70,7 @@ namespace TestStealAllTheCats
         }
 
         [TestMethod]
+        [TestCategory("Unit")]
         public async Task GetOrCreateTagAsync_CreatesNewTag_WhenNotExists()
         {
             using var context = CreateInMemoryDbContext();
@@ -80,6 +84,7 @@ namespace TestStealAllTheCats
         }
 
         [TestMethod]
+        [TestCategory("Unit")]
         public async Task GetOrCreateTagAsync_ReturnsExistingTag_WhenExists()
         {
             using var context = CreateInMemoryDbContext();
