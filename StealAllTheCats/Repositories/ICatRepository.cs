@@ -8,5 +8,7 @@ namespace StealAllTheCats.Repositories
         Task AddCatAsync(CatEntity cat);
         Task<TagEntity> GetOrCreateTagAsync(string tagName);
         Task SaveChangesAsync();
+        Task<CatEntity?> GetCatWithTagsAsync(int id);
+        IQueryable<CatEntity> GetCatsWithTags();
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using StealAllTheCats.Data;
 using StealAllTheCats.Dto;
 using StealAllTheCats.Models;
+using StealAllTheCats.Repositories;
 using StealAllTheCats.Services;
 
 namespace StealAllTheCats.Controllers
@@ -12,39 +13,41 @@ namespace StealAllTheCats.Controllers
     [Route("api/[controller]")]
     public class CatsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
         private readonly IBackgroundJobClient _backgroundJobClient;
+        private readonly ICatService _catService;
 
         public CatsController(
-            ApplicationDbContext context,
+            ICatService catService,
             IBackgroundJobClient backgroundJobClient)
         {
-            _context = context;
+            _catService = catService;
             _backgroundJobClient = backgroundJobClient;
         }
 
         [HttpPost("fetch")]
         public IActionResult FetchCats()
         {
-            var jobId = _backgroundJobClient.Enqueue<CatFetchService>(service => service.FetchAndSaveCatsAsync());
+            var jobId = _backgroundJobClient.Enqueue<ICatService>(service => service.FetchAndSaveCatsAsync());
             return Accepted(new { JobId = jobId });
         }
 
         // GET: api/cats/id
         [HttpGet("{id}")]
-        public async Task<ActionResult<CatEntity>> GetCat(int id)
+        public async Task<ActionResult<CatDto>> GetCat(int id)
         {
-            var cat = await _context.Cats.FindAsync(id);
+            var cat = await _catService.GetCatWithTagsAsync(id);
 
             if (cat == null)
                 return NotFound();
 
-            return cat;
+            var catDto = CatEntityToDto(cat);
+
+            return Ok(catDto);
         }
 
         // GET: api/cats
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CatEntity>>> GetCats(
+        public async Task<ActionResult<IEnumerable<CatDto>>> GetCats(
                         [FromQuery] string? tag = null,
                         [FromQuery] int page = 1,
                         [FromQuery] int pageSize = 10)
@@ -55,7 +58,7 @@ namespace StealAllTheCats.Controllers
             if (pageSize <= 0)
                 pageSize = 10;
 
-            IQueryable<CatEntity> query = _context.Cats.Include(c => c.CatTags).ThenInclude(ct => ct.Tag);
+            IQueryable<CatEntity> query = _catService.GetCatsWithTags();
 
             if (!string.IsNullOrEmpty(tag))
                 query = query.Where(c => c.CatTags.Any(ct => ct.Tag.Name == tag));
@@ -65,15 +68,7 @@ namespace StealAllTheCats.Controllers
                 .Take(pageSize)
                 .ToListAsync();
 
-            var pagedCatsDto = pagedCats.Select(c => new CatDto
-            {
-                Id = c.Id,
-                CatId = c.CatId,
-                Width = c.Width,
-                Height = c.Height,
-                Created = c.Created,
-                Tags = c.CatTags.Select(ct => ct.Tag.Name).ToList()
-            }).ToList();
+            var pagedCatsDto = pagedCats.Select(c => CatEntityToDto(c)).ToList();
 
             return Ok(pagedCatsDto);
         }
@@ -90,6 +85,19 @@ namespace StealAllTheCats.Controllers
             var state = jobDetails.History.FirstOrDefault()?.StateName;
 
             return Ok(new { JobId = id, Status = state });
+        }
+
+        private CatDto CatEntityToDto(CatEntity cat)
+        {
+            return new CatDto
+            {
+                Id = cat.Id,
+                CatId = cat.CatId,
+                Width = cat.Width,
+                Height = cat.Height,
+                Created = cat.Created,
+                Tags = cat.CatTags.Select(ct => ct.Tag.Name).ToList()
+            };
         }
     }
 }

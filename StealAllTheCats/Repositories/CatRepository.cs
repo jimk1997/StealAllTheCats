@@ -45,5 +45,19 @@ namespace StealAllTheCats.Repositories
         {
             await _context.SaveChangesAsync();
         }
+
+        public async Task<CatEntity?> GetCatWithTagsAsync(int id)
+        {
+            return await _context.Cats
+                .Include(c => c.CatTags)
+                .ThenInclude(ct => ct.Tag)
+                .FirstOrDefaultAsync(c => c.Id == id);
+        }
+        public IQueryable<CatEntity> GetCatsWithTags()
+        {
+            return _context.Cats
+                .Include(c => c.CatTags)
+                .ThenInclude(ct => ct.Tag);
+        }
     }
 }

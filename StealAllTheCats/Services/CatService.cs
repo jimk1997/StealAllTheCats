@@ -5,16 +5,16 @@ using StealAllTheCats.Dto;
 
 namespace StealAllTheCats.Services
 {
-    public class CatFetchService
+    public class CatService : ICatService
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ICatRepository _catRepository;
-        private readonly ILogger<CatFetchService> _logger;
+        private readonly ILogger<CatService> _logger;
 
-        public CatFetchService(
+        public CatService(
             IHttpClientFactory httpClientFactory,
             ICatRepository catRepository,
-            ILogger<CatFetchService> logger)
+            ILogger<CatService> logger)
         {
             _httpClientFactory = httpClientFactory;
             _catRepository = catRepository;
@@ -43,7 +43,15 @@ namespace StealAllTheCats.Services
                 await _catRepository.SaveChangesAsync();
             }
         }
-
+        public Task<CatEntity?> GetCatWithTagsAsync(int id)
+        {
+            return _catRepository.GetCatWithTagsAsync(id);
+        }
+        public IQueryable<CatEntity> GetCatsWithTags()
+        {
+            return _catRepository.GetCatsWithTags();
+        }
+       
         private async Task<List<CatApiImage>> FetchCatsAsync()
         {
             var client = _httpClientFactory.CreateClient("CatApiClient");

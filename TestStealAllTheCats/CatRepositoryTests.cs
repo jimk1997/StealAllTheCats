@@ -33,6 +33,40 @@ namespace TestStealAllTheCats
         }
 
         [TestMethod]
+        public async Task GetCatWithTagsAsync_ReturnsCat_WhenCatExists()
+        {
+            using var context = CreateInMemoryDbContext();
+            var repo = new CatRepository(context);
+
+            var cat = new CatEntity { CatId = "abc123", Width = 200, Height = 300, Image = new byte[0], Created = DateTime.UtcNow };
+            await context.Cats.AddAsync(cat);
+            await context.SaveChangesAsync();
+
+            var result = await repo.GetCatWithTagsAsync(cat.Id);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual("abc123", result.CatId);
+        }
+
+        [TestMethod]
+        public async Task GetCatsWithTags_ReturnsCats()
+        {
+            using var context = CreateInMemoryDbContext();
+            var repo = new CatRepository(context);
+
+            var cat1 = new CatEntity { CatId = "abc1", Width = 100, Height = 100, Image = new byte[0], Created = DateTime.UtcNow };
+            var cat2 = new CatEntity { CatId = "abc2", Width = 200, Height = 200, Image = new byte[0], Created = DateTime.UtcNow };
+            await context.Cats.AddRangeAsync(cat1, cat2);
+            await context.SaveChangesAsync();
+
+            var cats = repo.GetCatsWithTags().ToList();
+
+            Assert.AreEqual(2, cats.Count);
+            Assert.IsTrue(cats.Any(c => c.CatId == "abc1"));
+            Assert.IsTrue(cats.Any(c => c.CatId == "abc2"));
+        }
+
+        [TestMethod]
         public async Task GetOrCreateTagAsync_CreatesNewTag_WhenNotExists()
         {
             using var context = CreateInMemoryDbContext();

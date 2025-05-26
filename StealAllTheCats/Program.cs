@@ -21,8 +21,8 @@ builder.Services.AddHttpClient("CatApiClient", (serviceProvider, client) =>
     client.DefaultRequestHeaders.Add("x-api-key", configuration["CatApi:ApiKey"]);
 });
 
-builder.Services.AddScoped<CatFetchService>();
 builder.Services.AddScoped<ICatRepository, CatRepository>();
+builder.Services.AddScoped<ICatService, CatService>();
 
 builder.Services.AddHangfire(cfg =>
     cfg.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
