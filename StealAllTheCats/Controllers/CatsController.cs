@@ -32,10 +32,13 @@ namespace StealAllTheCats.Controllers
         }
 
         [HttpGet("jobs/{id}")]
-        public IActionResult GetJobStatus(string id)
+        public IActionResult GetJobStatus(int id)
         {
+            if (id <= 0)
+                return BadRequest(new { Status = "InvalidId", Message = "Job ID must be a positive integer." });
+
             var monitoringApi = JobStorage.Current.GetMonitoringApi();
-            var jobDetails = monitoringApi.JobDetails(id);
+            var jobDetails = monitoringApi.JobDetails(id.ToString());
 
             if (jobDetails == null)
                 return NotFound(new { Status = "NotFound", Message = "Job ID not found" });
