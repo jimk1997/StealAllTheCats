@@ -82,30 +82,37 @@
 
   An easy way to perform background processing in .NET Core applications. https://www.hangfire.io/
 
-- Database Configuration:
-
-  1. Use the Installer executable for Microsoft SQL Server 2022 Developer Edition (SQL2022-SSEI-Dev.exe). https://www.microsoft.com/en-us/sql-server/sql-server-downloads
-  2. Use Windows Authentication to connect to the 'CatsDB' database on the local SQL Server instance.
-
-- Database Migration:
+- Running the Application via Container:
 
   1. Clone Github Repository https://github.com/jimk1997/StealAllTheCats.git
-  2. Open Developer Command Prompt
-  3. cd C:\Users\yourUser\source\repos\StealAllTheCats\StealAllTheCats
-  4. dotnet ef migrations add InitialCreate
-  5. dotnet ef database update
-
-- Running the Application:
- 
-  1. Run the app with IIS Express from Visual Studio.
-  2. Access the Swagger UI for API documentation and testing at:  
+  2. Download Docker Desktop https://www.docker.com/products/docker-desktop/
+  3. Restart your PC and enter BIOS/UEFI setup and enable the virtualization option.
+  4. Open Developer Command Prompt
+  5. cd C:\Users\yourUser\source\repos\StealAllTheCats
+  6. docker-compose up --build
+  7. Access the Swagger UI for API documentation and testing at:
      https://localhost:44366/swagger/index.html
 
-- Running the Application via Container (Alternative):
+- Running the Application (Alternative 1):
 
-  1. Download Docker Desktop https://www.docker.com/products/docker-desktop/
-  2. Restart your PC and enter BIOS/UEFI setup and enable the virtualization option.
-  3. Run the following SQL Queries in Sql Server Management Studio https://learn.microsoft.com/en-us/ssms/
+  1. Clone Github Repository https://github.com/jimk1997/StealAllTheCats.git
+  2. Use the Installer executable for Microsoft SQL Server 2022 Developer Edition (SQL2022-SSEI-Dev.exe). https://www.microsoft.com/en-us/sql-server/sql-server-downloads
+  3. Use Windows Authentication to connect to the 'CatsDB' database on the local SQL Server instance.
+  4. Clone Github Repository https://github.com/jimk1997/StealAllTheCats.git
+  5. Open Developer Command Prompt
+  6. cd C:\Users\yourUser\source\repos\StealAllTheCats\StealAllTheCats
+  7. dotnet ef migrations add InitialCreate
+  8. dotnet ef database update
+  9. Run the app with IIS Express from Visual Studio.
+ 10. Access the Swagger UI for API documentation and testing at:  
+     https://localhost:44366/swagger/index.html
+
+- Running the Application via Container (Alternative 2):
+
+  1. Clone Github Repository https://github.com/jimk1997/StealAllTheCats.git
+  2. Download Docker Desktop https://www.docker.com/products/docker-desktop/
+  3. Restart your PC and enter BIOS/UEFI setup and enable the virtualization option.
+  4. Run the following SQL Queries in Sql Server Management Studio https://learn.microsoft.com/en-us/ssms/
 
      ```sql
      CREATE LOGIN stealuser WITH PASSWORD = 'StealCats@123';  
@@ -113,14 +120,16 @@
      CREATE USER stealuser FOR LOGIN stealuser;  
      ALTER ROLE db_owner ADD MEMBER stealuser;  
      ```
-  4. Change the Connection String
+  5. Change the Connection String
 
 	 ```json
 	 "DefaultConnection": "Server=host.docker.internal;Database=CatsDB;User Id=stealuser;Password=StealCats@123;TrustServerCertificate=True;"
 	 ```
-  5. Go to Database Properties via SSMS -> Security -> Select "SQL Server and Windows Authentication mode"
-  6. Activate TCP/IP
+  6. Go to Database Properties via SSMS -> Security -> Select "SQL Server and Windows Authentication mode"
+  7. Activate TCP/IP
 	 Sql Server Configuration Manager  
 	 SQL Server Network Configuration -> Protocols for MSSQLSERVER  
 	 Enable TCP/IP  
-  7. Run the app with Container(Dockfile) from Visual Studio. 
+  8. Run the app with Container(Dockfile) from Visual Studio.
+  9. Access the Swagger UI for API documentation and testing at:  
+     https://localhost:44366/swagger/index.html
