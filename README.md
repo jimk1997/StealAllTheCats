@@ -97,14 +97,14 @@
 
   1. Clone Github Repository https://github.com/jimk1997/StealAllTheCats.git
   2. Use the Installer executable for Microsoft SQL Server 2022 Developer Edition (SQL2022-SSEI-Dev.exe). https://www.microsoft.com/en-us/sql-server/sql-server-downloads
-  3. Use Windows Authentication to connect to the 'CatsDB' database on the local SQL Server instance.
-  4. Clone Github Repository https://github.com/jimk1997/StealAllTheCats.git
-  5. Open Developer Command Prompt
-  6. cd C:\Users\yourUser\source\repos\StealAllTheCats\StealAllTheCats
-  7. dotnet ef migrations add InitialCreate
-  8. dotnet ef database update
-  9. Run the app with IIS Express from Visual Studio.
- 10. Access the Swagger UI for API documentation and testing at:  
+     and use Windows Authentication to connect to the 'CatsDB' database on the local SQL Server instance.
+  3. Clone Github Repository https://github.com/jimk1997/StealAllTheCats.git
+  4. Open Developer Command Prompt
+  5. cd C:\Users\yourUser\source\repos\StealAllTheCats\StealAllTheCats
+  6. dotnet ef migrations add InitialCreate
+  7. dotnet ef database update
+  8. Run the app with IIS Express from Visual Studio.
+  9. Access the Swagger UI for API documentation and testing at:  
      https://localhost:44366/swagger/index.html
 
 - Running the Application via Container (Alternative 2):
