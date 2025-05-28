@@ -1,6 +1,7 @@
 using Hangfire;
 using Hangfire.SqlServer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
 using StealAllTheCats.Data;
@@ -45,7 +46,17 @@ builder.Services.AddHangfireServer();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new() { Title = "StealAllTheCats API", Version = "v1" });
+
+    // Manually specify the server URL for Swagger UI
+    c.AddServer(new OpenApiServer
+    {
+        Url = "http://localhost:5000"
+    });
+});
 
 // Configure Serilog before building the app
 //Log.Logger = new LoggerConfiguration()
@@ -72,10 +83,45 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+//using (var scope = app.Services.CreateScope())
+//{
+//    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+//    db.Database.Migrate(); // ensures Catsdb + Hangfire tables are created
+//}
+#region DB Migration
+using var scope = app.Services.CreateScope();
+var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+var maxRetries = 10;
+var retryCount = 0;
+var delay = TimeSpan.FromSeconds(5);
+
+while (retryCount < maxRetries)
+{
+    try
+    {
+        db.Database.Migrate();
+        break;  // success
+    }
+    catch (Exception ex)
+    {
+        Log.Warning("Database migration failed. Retrying in {Delay}s... Exception: {Exception}", delay.TotalSeconds, ex.Message);
+        await Task.Delay(delay);
+        retryCount++;
+    }
+}
+
+if (retryCount == maxRetries)
+{
+    Log.Error("Could not migrate the database after {MaxRetries} attempts.", maxRetries);
+    throw new Exception("Database migration failed.");
+}
+#endregion
 
 app.Run();

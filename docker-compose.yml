@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: mssql
+    environment:
+      SA_PASSWORD: "YourStrong!Passw0rd"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Express"
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql_data:/var/opt/mssql
+    networks:
+      - appnetwork
+
+  webapp:
+    build:
+      context: .
+      dockerfile: StealAllTheCats/Dockerfile
+    depends_on:
+      - mssql
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: "Server=mssql;Database=Catsdb;User=sa;Password=YourStrong!Passw0rd;Encrypt=False;TrustServerCertificate=True"
+    ports:
+      - "5000:8080"
+    networks:
+      - appnetwork
+
+volumes:
+  mssql_data:
+
+networks:
+  appnetwork:
